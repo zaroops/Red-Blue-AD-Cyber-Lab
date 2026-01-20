@@ -62,17 +62,34 @@ Group-based permissions are used instead of assigning rights directly to users, 
 
 ## Logging & Visibility
 
+## Logging & Monitoring Setup
+
+To provide centralized visibility and detection capability, Sysmon and Splunk were deployed across the environment prior to any attack activity.
+
 ### Sysmon
+Sysmon was installed on both the Domain Controller and the Windows 10 workstation using a hardened configuration (SwiftOnSecurity). This enabled detailed telemetry including:
 
-Sysmon was installed on:
-- Domain Controller
-- Windows 10 workstation
-
-Sysmon provides enhanced telemetry including:
 - Process creation
 - Network connections
-- LSASS access
+- LSASS access attempts
 - Privilege escalation activity
+
+Sysmon events were verified via the `Microsoft-Windows-Sysmon/Operational` event log.
+
+![Sysmon Operational Log](screenshots/sysmon-operational.png)
+
+---
+
+### Splunk
+Splunk Enterprise (Free) was deployed as the central log aggregation platform. Splunk Universal Forwarders were installed on both Windows systems and configured to forward:
+
+- Windows Security logs
+- Sysmon logs
+- PowerShell operational logs
+
+Log ingestion was validated prior to attacks to establish a clean baseline.
+
+![Splunk Sysmon Logs](screenshots/splunk-sysmon-logs.png)
 
 ---
 
